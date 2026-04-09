@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-beige: #F5F5DC;
+  --color-brand-green: #2E7D32;
+  --color-brand-green-dark: #1b5e20;
+  --color-brand-green-light: #e8f5e9;
+  --color-brand-gold: #C9A227;
+  --color-brand-gold-dark: #B08D22;
+
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Lato", sans-serif;
+
+  --animate-marquee: marquee 40s linear infinite;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@layer base {
+  body {
+    background-color: var(--color-brand-beige);
+    color: #1a1a1a;
+    font-family: var(--font-sans);
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+  }
+}
+
+/* Custom scrollbar and utils */
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background-color: var(--color-brand-green);
+  color: var(--color-brand-beige);
+}
