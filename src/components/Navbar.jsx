@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ShoppingBag, Search, User, Menu, X } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user, logout } = useAuth();
 
   return (
     <nav className="sticky top-0 z-50 bg-[#F5F5DC]/90 backdrop-blur-md border-b border-[#2E7D32]/10 transition-all duration-300">
@@ -29,9 +31,24 @@ const Navbar = () => {
             <button className="text-gray-800 hover:text-[#2E7D32] transition-colors">
               <Search size={20} strokeWidth={1.5} />
             </button>
-            <Link to="#" className="text-gray-800 hover:text-[#2E7D32] transition-colors">
-              <User size={20} strokeWidth={1.5} />
-            </Link>
+            
+            {user ? (
+              <div className="relative group">
+                <button className="flex items-center space-x-1 text-gray-800 hover:text-[#2E7D32] transition-colors">
+                  <User size={20} strokeWidth={1.5} />
+                  <span className="text-xs font-medium max-w-[80px] truncate">{user.name}</span>
+                </button>
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden group-hover:block border border-[#d4af37]/20">
+                  <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-[#e8f5e9]">Profile</Link>
+                  <button onClick={logout} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-[#e8f5e9]">Logout</button>
+                </div>
+              </div>
+            ) : (
+              <Link to="/login" className="text-gray-800 hover:text-[#2E7D32] transition-colors">
+                <User size={20} strokeWidth={1.5} />
+              </Link>
+            )}
+
             <Link to="/cart" className="text-gray-800 hover:text-[#2E7D32] transition-colors relative">
               <ShoppingBag size={20} strokeWidth={1.5} />
               <span className="absolute -top-2 -right-2 bg-[#C9A227] text-white text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center">
@@ -64,9 +81,18 @@ const Navbar = () => {
             <Link to="/about" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-3 text-base font-medium text-gray-800 hover:bg-[#e8f5e9] hover:text-[#2E7D32]">About</Link>
             <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-3 text-base font-medium text-gray-800 hover:bg-[#e8f5e9] hover:text-[#2E7D32]">Contact</Link>
             <hr className="my-2 border-[#2E7D32]/10" />
-            <Link to="#" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-3 text-base font-medium text-gray-800 flex items-center space-x-2">
-              <User size={18} /> <span>Account</span>
-            </Link>
+            
+            {user ? (
+              <>
+                <div className="px-3 py-3 text-sm font-semibold text-[#1b5e20]">Logged in as: {user.name}</div>
+                <Link to="/profile" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-3 text-base font-medium text-gray-800 hover:bg-[#e8f5e9]">Profile</Link>
+                <button onClick={() => { logout(); setIsMobileMenuOpen(false); }} className="block w-full text-left px-3 py-3 text-base font-medium text-gray-800 hover:bg-[#e8f5e9]">Logout</button>
+              </>
+            ) : (
+              <Link to="/login" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-3 text-base font-medium text-gray-800 flex items-center space-x-2 hover:bg-[#e8f5e9]">
+                <User size={18} /> <span>Login / Sign Up</span>
+              </Link>
+            )}
           </div>
         </div>
       )}
